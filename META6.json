@@ -1,0 +1,20 @@
+{
+  "auth" : "cpan:FCO",
+  "authors" : [
+    "Fernando Correa de Oliveira"
+  ],
+  "build-depends" : [ ],
+  "depends" : [ ],
+  "description" : "blah blah blah",
+  "license" : "Artistic-2.0",
+  "name" : "Cro::HTTP::Session::Red",
+  "perl" : "6.c",
+  "provides" : {
+    "Cro::HTTP::Session::Red" : "lib/Cro/HTTP/Session/Red.pm6"
+  },
+  "resources" : [ ],
+  "source-url" : "",
+  "tags" : [ ],
+  "test-depends" : [ ],
+  "version" : "0.0.1"
+}

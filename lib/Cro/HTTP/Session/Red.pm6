@@ -5,20 +5,14 @@ unit role Cro::HTTP::Session::Red:ver<0.0.1>:auth<cpan:FCO>[::Model Red::Model, 
 also does Cro::HTTP::Session::Persistent[Model];
 
 submethod TWEAK(|) { note "AQUI!!!" }
-method load($session-id --> Model) {
+method load($session-id) {
     note "load: ", $session-id;
     Model.^load($session-id) // fail "Error loading session $session-id";
 }
 
-method create(Str $session-id) {
-    Model.^new-with-id: $session-id
-}
-
-method save($id, Model $session --> Nil) is rw {
-    note "save1/2: $id -> ", $session;
+method save($id, Model $session --> Nil) {
+    note "save: ", $session;
     $session.^set-id: $id;
-    $session.$new-url();
-    note "save2/2: $id -> ", $session;
     $session.^save
 }
 

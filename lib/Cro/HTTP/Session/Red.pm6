@@ -1,22 +1,45 @@
 use v6.d;
 use Red::Model;
 use Cro::HTTP::Session::Persistent;
-unit role Cro::HTTP::Session::Red:ver<0.0.1>:auth<cpan:FCO>[::Model Red::Model, Str :$new-url];
+unit role Cro::HTTP::Session::Red:ver<0.0.1>:auth<cpan:FCO>[::Model Red::Model];
 also does Cro::HTTP::Session::Persistent[Model];
 
 submethod TWEAK(|) { note "AQUI!!!" }
 method load($session-id) {
-    note "load: ", $session-id;
-    Model.^load($session-id) // fail "Error loading session $session-id";
+    CATCH {
+        default {
+            .say;
+            .rethrow
+        }
+    }
+    note "load -> ", $session-id;
+    my $loaded = Model.^load: $session-id;
+    note "loaded: ", $loaded;
+    $loaded // Model
 }
 
-method save($id, Model $session --> Nil) {
+method create($id) {
+    Model.^new-with-id: $id
+}
+
+method save($id, Model:D $session --> Nil) {
+    CATCH {
+        default {
+            .say;
+            .rethrow
+        }
+    }
     note "save: ", $session;
-    $session.^set-id: $id;
-    $session.^save
+    $session.^save if $session.^is-dirty
 }
 
 method clear(--> Nil) {
+    CATCH {
+        default {
+            .say;
+            .rethrow
+        }
+    }
     note "clear";
     Model.clear if Model.^can: "clear"
 }

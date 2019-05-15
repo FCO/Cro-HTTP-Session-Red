@@ -159,7 +159,9 @@ sub routes() is export {
 
 =head1 DESCRIPTION
 
-Cro::HTTP::Session::Red is ...
+Cro::HTTP::Session::Red is a Plugin for Cro to use Red as session manager.
+You can create any custom Red model to store the Cro session, but its id
+must be a Str and the generated session string will be used as the id.
 
 =head1 AUTHOR
 

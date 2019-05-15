@@ -1,12 +1,6 @@
-os:
-  - linux
-  - osx
-language: perl6
-perl6:
-  - latest
-install:
-  - rakudobrew build zef
-  - zef install --deps-only --/test .
+services:
+  - docker
+before_install:
+  - docker pull fernandocorrea/cro-http-session-red-tester
 script:
-  - PERL6LIB=$PWD/lib prove -e perl6 -vr t/
-sudo: false
+  - docker run -v $PWD:/code fernandocorrea/cro-http-session-red-tester

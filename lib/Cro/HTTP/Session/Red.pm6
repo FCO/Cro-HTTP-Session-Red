@@ -1,7 +1,7 @@
 use v6.d;
 use Red::Model;
 use Cro::HTTP::Session::Persistent;
-unit role Cro::HTTP::Session::Red:ver<0.0.1>:auth<cpan:FCO>[::Model Red::Model];
+unit role Cro::HTTP::Session::Red:ver<0.0.2>:auth<cpan:FCO>[::Model Red::Model];
 also does Cro::HTTP::Session::Persistent[Model];
 
 method load($session-id) {

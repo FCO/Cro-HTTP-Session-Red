@@ -1,2 +1,3 @@
 FROM    fernandocorrea/red-tester
-RUN     zef install Red --/test --force-install
+RUN     zef install --/test --force-install Red
+RUN     zef install --/test --force-install cro

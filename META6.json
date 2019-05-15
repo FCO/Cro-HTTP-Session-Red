@@ -4,8 +4,10 @@
     "Fernando Correa de Oliveira"
   ],
   "build-depends" : [ ],
-  "depends" : [ ],
-  "description" : "blah blah blah",
+  "depends" : [
+    "Red"
+  ],
+  "description" : "Plugin for Cro to use Red as session manager",
   "license" : "Artistic-2.0",
   "name" : "Cro::HTTP::Session::Red",
   "perl" : "6.c",
@@ -13,8 +15,10 @@
     "Cro::HTTP::Session::Red" : "lib/Cro/HTTP/Session/Red.pm6"
   },
   "resources" : [ ],
-  "source-url" : "",
+  "source-url" : "https://github.com/FCO/Cro-HTTP-Session-Red.git",
   "tags" : [ ],
-  "test-depends" : [ ],
+  "test-depends" : [
+    "Red"
+  ],
   "version" : "0.0.1"
 }

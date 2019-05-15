@@ -4,11 +4,10 @@ use Cro::HTTP::Session::Persistent;
 unit role Cro::HTTP::Session::Red:ver<0.0.1>:auth<cpan:FCO>[::Model Red::Model];
 also does Cro::HTTP::Session::Persistent[Model];
 
-submethod TWEAK(|) { note "AQUI!!!" }
 method load($session-id) {
     CATCH {
         default {
-            .say;
+            .note;
             .rethrow
         }
     }
@@ -17,13 +16,19 @@ method load($session-id) {
 }
 
 method create($id) {
+    CATCH {
+        default {
+            .note;
+            .rethrow
+        }
+    }
     Model.^new-with-id: $id
 }
 
 method save($id, Model:D $session --> Nil) {
     CATCH {
         default {
-            .say;
+            .note;
             .rethrow
         }
     }
@@ -33,11 +38,10 @@ method save($id, Model:D $session --> Nil) {
 method clear(--> Nil) {
     CATCH {
         default {
-            .say;
+            .note;
             .rethrow
         }
     }
-    note "clear";
     Model.clear if Model.^can: "clear"
 }
 
@@ -117,8 +121,8 @@ model UserSession is table<logged_user> does Cro::HTTP::Auth {
 sub routes() is export {
     route {
         before Cro::HTTP::Session::Red[UserSession].new: cookie-name => 'MY_SESSION_COOKIE_NAME';
-        get -> UserSession $session {
-            content 'text/html', "<h1> Logged User: $session.user.name() </h1>";
+        get -> UserSession $session (User :$user, |) {
+            content 'text/html', "<h1> Logged User: $user.name() </h1>";
         }
 
         get -> 'login' {

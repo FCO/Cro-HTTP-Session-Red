@@ -15,6 +15,7 @@ isa-ok $s, Bla;
 ok not $s.defined;
 
 my $created = Bla.^create: :id<abc>;
+isa-ok $created, Bla;
 
 $s = $session.load("abc");
 isa-ok $s, Bla;
@@ -26,6 +27,7 @@ isa-ok $s, Bla;
 is $s.id, "cde";
 
 $s.a = "bla";
+ok $s.^is-dirty;
 $session.save: "fgh", $s;
 ok not $s.^is-dirty;
 $session.save: "fgh", $s;

@@ -32,7 +32,7 @@ method save($id, Model:D $session --> Nil) {
             .rethrow
         }
     }
-    $session.^save if $session.^is-dirty
+    $session.^save if $session.^is-dirty;
 }
 
 method clear(--> Nil) {

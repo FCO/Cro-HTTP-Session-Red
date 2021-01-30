@@ -12,7 +12,7 @@ method load($session-id) {
         }
     }
     my $loaded = Model.^load: $session-id;
-    $loaded // Model
+    $loaded // self.create($session-id)
 }
 
 method create($id) {

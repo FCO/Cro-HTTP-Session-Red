@@ -12,7 +12,7 @@ my Cro::HTTP::Session::Red[Bla] $session .= new: cookie-name => "bla";
 
 my $s = $session.load("abc");
 isa-ok $s, Bla;
-ok not $s.defined;
+ok $s.defined;
 
 my $created = Bla.^create: :id<abc>;
 isa-ok $created, Bla;

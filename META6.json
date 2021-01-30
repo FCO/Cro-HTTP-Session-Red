@@ -6,7 +6,8 @@
   "build-depends": [
   ],
   "depends": [
-    "Red"
+    "Red",
+    "Cro"
   ],
   "description": "Plugin for Cro to use Red as session manager",
   "license": "Artistic-2.0",

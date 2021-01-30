@@ -7,7 +7,8 @@
   ],
   "depends": [
     "Red",
-    "Cro"
+    "Cro",
+    "Cro::HTTP::Session::Persistent"
   ],
   "description": "Plugin for Cro to use Red as session manager",
   "license": "Artistic-2.0",

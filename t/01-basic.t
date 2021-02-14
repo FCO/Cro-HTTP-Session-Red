@@ -3,6 +3,8 @@ use Test;
 use Red;
 use Cro::HTTP::Session::Red;
 
+plan 10;
+
 model Bla { has Str $.id is id; has Str $.a is rw is column{ :nullable } }
 
 my $*RED-DB = database "SQLite";
@@ -11,8 +13,7 @@ Bla.^create-table: :if-not-exists;
 my Cro::HTTP::Session::Red[Bla] $session .= new: cookie-name => "bla";
 
 my $s = $session.load("abc");
-isa-ok $s, Bla;
-ok $s.defined;
+isa-ok $s, Failure;
 
 my $created = Bla.^create: :id<abc>;
 isa-ok $created, Bla;

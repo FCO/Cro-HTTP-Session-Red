@@ -11,8 +11,7 @@ method load($session-id) {
             .rethrow
         }
     }
-    my $loaded = Model.^load: $session-id;
-    $loaded // self.create($session-id)
+    Model.^load($session-id) // fail("No session with ID " ~ $session-id)
 }
 
 method create($id) {

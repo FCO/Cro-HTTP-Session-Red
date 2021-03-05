@@ -12,13 +12,15 @@ Bla.^create-table: :if-not-exists;
 
 my Cro::HTTP::Session::Red[Bla] $session .= new: cookie-name => "bla";
 
-my $s = $session.load("abc");
-isa-ok $s, Failure;
+throws-like { $session.load("abc") },
+    Exception,
+    "attempt to load non-existing session throws",
+    :message(/<< ID \s abc >>/);
 
 my $created = Bla.^create: :id<abc>;
 isa-ok $created, Bla;
 
-$s = $session.load("abc");
+my $s = $session.load("abc");
 isa-ok $s, Bla;
 ok $s.defined;
 is-deeply $s, $created;

@@ -4,14 +4,22 @@ use Cro::HTTP::Session::Persistent;
 unit role Cro::HTTP::Session::Red:ver<0.0.2>:auth<cpan:FCO>[::Model Red::Model];
 also does Cro::HTTP::Session::Persistent[Model];
 
+my class X::Session::NotLoaded is Exception {
+    has $.session-id is required;
+    method message { "No session with ID " ~ $!session-id }
+}
+
 method load($session-id) {
     CATCH {
+        when X::Session::NotLoaded {
+            .rethrow
+        }
         default {
             .note;
             .rethrow
         }
     }
-    Model.^load($session-id) // fail("No session with ID " ~ $session-id)
+    Model.^load($session-id) // X::Session::NotLoaded.new(:$session-id).throw
 }
 
 method create($id) {

@@ -1,48 +1,3 @@
-NAME
-====
-
-Cro::HTTP::Session::Red - Plugin for Cro to use Red as session manager
-
-SYNOPSIS
-========
-
-```perl6
-# service.raku
-
-use Cro::HTTP::Log::File;
-use Cro::HTTP::Server;
-use Red;
-use Routes;
-
-red-defaults "SQLite";
-
-User.^create-table: :if-not-exists;
-UserSession.^create-table: :if-not-exists;
-
-try User.^create: :name<CookieMonster>, :email<cookie@monster.com>, :password("1234");
-
-my Cro::Service $http = Cro::HTTP::Server.new(
-    http => <1.1>,
-    host => %*ENV<CLASSIFIED_HOST> ||
-        die("Missing CLASSIFIED_HOST in environment"),
-    port => %*ENV<CLASSIFIED_PORT> ||
-        die("Missing CLASSIFIED_PORT in environment"),
-    application => routes(),
-    after => [
-        Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)
-    ]
-);
-$http.start;
-say "Listening at http://%*ENV<CLASSIFIED_HOST>:%*ENV<CLASSIFIED_PORT>";
-react {
-    whenever signal(SIGINT) {
-        say "Shutting down...";
-        $http.stop;
-        done;
-    }
-}
-
-
 # lib/Routes.rakumod
 
 use Cro::HTTP::Router;
@@ -112,22 +67,4 @@ sub routes is export {
         }
     }
 }
-```
-
-DESCRIPTION
-===========
-
-Cro::HTTP::Session::Red is a Plugin for Cro to use Red as session manager. You can create any custom Red model to store the Cro session, but its id must be a Str and the generated session string will be used as the id.
-
-AUTHOR
-======
-
-Fernando Correa de Oliveira <fernandocorrea@gmail.com>
-
-COPYRIGHT AND LICENSE
-=====================
-
-Copyright 2019 Fernando Correa de Oliveira
-
-This library is free software; you can redistribute it and/or modify it under the Artistic License 2.0.
 

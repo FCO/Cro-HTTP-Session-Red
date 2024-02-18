@@ -62,15 +62,14 @@ Cro::HTTP::Session::Red - Plugin for Cro to use Red as session manager
 
 =begin code :lang<perl6>
 
-# service.pl
+# service.raku
 
 use Cro::HTTP::Log::File;
 use Cro::HTTP::Server;
-use Routes;
 use Red;
+use Routes;
 
-$GLOBAL::RED-DB = database "SQLite", :database("{%*ENV<HOME>}/test.db");
-$GLOBAL::RED-DEBUG = so %*ENV<RED_DEBUG>;
+red-defaults "SQLite";
 
 User.^create-table: :if-not-exists;
 UserSession.^create-table: :if-not-exists;
@@ -99,7 +98,7 @@ react {
 }
 
 
-# lib/Routes.pm6
+# lib/Routes.rakumod
 
 use Cro::HTTP::Router;
 use Cro::HTTP::Session::Red;
@@ -121,15 +120,21 @@ model User is table<account> {
 
 model UserSession is table<logged_user> does Cro::HTTP::Auth {
     has Str  $.id         is id;
-    has UInt $.uid        is referencing{ User.id };
+    has UInt $.uid        is referencing(*.id, :model(User));
     has User $.user       is relationship{ .uid } is rw;
 }
 
-sub routes() is export {
+subset LoggedInSession is sub-model of UserSession where .user.defined;
+
+sub routes is export {
     route {
         before Cro::HTTP::Session::Red[UserSession].new: cookie-name => 'MY_SESSION_COOKIE_NAME';
-        get -> UserSession $session (User :$user, |) {
-            content 'text/html', "<h1> Logged User: $user.name() </h1>";
+        get -> LoggedInSession $session (User :$user, |) {
+            content 'text/html', "<h1> Logged User: { $user.name } </h1>";
+        }
+
+        get {
+            redirect '/login', :see-other;
         }
 
         get -> 'login' {
@@ -148,14 +153,15 @@ sub routes() is export {
 
         post -> UserSession $session, 'login' {
             request-body -> (Str() :$email, Str() :$password, *%) {
-                my $user = User.^load: :$email;
-                if $user.?check-password: $password {
-                    $session.user = $user;
-                    $session.^save;
-                    redirect '/', :see-other;
-                }
-                else {
-                    content 'text/html', "Bad username/password";
+                given User.^load: :$email {
+                    if .?check-password: $password {
+                        $session.user = $_;
+                        $session.^save;
+                        redirect '/', :see-other;
+                    }
+                    else {
+                        content 'text/html', "Bad username/password";
+                    }
                 }
             }
         }

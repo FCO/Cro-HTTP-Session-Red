@@ -4,6 +4,8 @@ use Cro::HTTP::Log::File;
 use Cro::HTTP::Server;
 use Red;
 use Routes;
+use User;
+use UserSession;
 
 red-defaults "SQLite";
 
@@ -14,10 +16,8 @@ try User.^create: :name<CookieMonster>, :email<cookie@monster.com>, :password("1
 
 my Cro::Service $http = Cro::HTTP::Server.new(
     http => <1.1>,
-    host => %*ENV<CLASSIFIED_HOST> ||
-        die("Missing CLASSIFIED_HOST in environment"),
-    port => %*ENV<CLASSIFIED_PORT> ||
-        die("Missing CLASSIFIED_PORT in environment"),
+    host => %*ENV<CLASSIFIED_HOST> ||= "0.0.0.0",
+    port => %*ENV<CLASSIFIED_PORT> ||= 8080,
     application => routes(),
     after => [
         Cro::HTTP::Log::File.new(logs => $*OUT, errors => $*ERR)

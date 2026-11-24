@@ -1,6 +1,11 @@
 Revision history for Cro-HTTP-Session-Red
 
 {{$NEXT}}
+    - Confirm compatibility with current Cro::HTTP and Red APIs
+    - Add HTTP middleware integration coverage
+    - Preserve session data when creating a new session
+    - Fix the example login with current Red and test its routes
+    - Update dependency metadata and CI for current Raku
 
 0.0.2  2019-05-15T21:49:28+01:00
     - Create a description

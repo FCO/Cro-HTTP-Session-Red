@@ -22,15 +22,7 @@ method load($session-id) {
     Model.^load($session-id) // X::Session::NotLoaded.new(:$session-id).throw
 }
 
-method create($id) {
-    CATCH {
-        default {
-            .note;
-            .rethrow
-        }
-    }
-    Model.^new-with-id: $id
-}
+method create($id --> Nil) {}
 
 method save($id, Model:D $session --> Nil) {
     CATCH {
@@ -39,6 +31,8 @@ method save($id, Model:D $session --> Nil) {
             .rethrow
         }
     }
+    my $current-id = $session.^id-values.head;
+    $session.^set-id: $id unless $current-id.defined && $current-id eq $id;
     $session.^save if $session.^is-dirty;
 }
 
@@ -153,10 +147,9 @@ sub routes is export {
 
         post -> UserSession $session, 'login' {
             request-body -> (Str() :$email, Str() :$password, *%) {
-                given User.^load: :$email {
+                given User.^find: :$email {
                     if .?check-password: $password {
                         $session.user = $_;
-                        $session.^save;
                         redirect '/', :see-other;
                     }
                     else {

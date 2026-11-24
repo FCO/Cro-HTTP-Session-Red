@@ -6,14 +6,13 @@
   "build-depends": [
   ],
   "depends": [
-    "Red",
-    "Cro",
-    "Cro::HTTP::Session::Persistent"
+    "Red:api<2>",
+    "Cro::HTTP:api<0>"
   ],
   "description": "Plugin for Cro to use Red as session manager",
   "license": "Artistic-2.0",
   "name": "Cro::HTTP::Session::Red",
-  "perl": "6.c",
+  "perl": "6.d",
   "provides": {
     "Cro::HTTP::Session::Red": "lib/Cro/HTTP/Session/Red.pm6"
   },
@@ -23,7 +22,7 @@
   "tags": [
   ],
   "test-depends": [
-    "Red"
+    "Cro::HTTP::Test"
   ],
   "version": "0.0.2"
 }

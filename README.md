@@ -98,10 +98,9 @@ sub routes is export {
 
         post -> UserSession $session, 'login' {
             request-body -> (Str() :$email, Str() :$password, *%) {
-                given User.^load: :$email {
+                given User.^find: :$email {
                     if .?check-password: $password {
                         $session.user = $_;
-                        $session.^save;
                         redirect '/', :see-other;
                     }
                     else {

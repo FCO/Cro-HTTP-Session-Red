@@ -1,7 +1,7 @@
 use v6.d;
 use Red::Model;
 use Cro::HTTP::Session::Persistent;
-unit role Cro::HTTP::Session::Red:ver<0.0.2>:auth<cpan:FCO>[::Model Red::Model];
+unit role Cro::HTTP::Session::Red:ver<0.0.3>:auth<zef:FCO>[::Model Red::Model];
 also does Cro::HTTP::Session::Persistent[Model];
 
 my class X::Session::NotLoaded is Exception {
